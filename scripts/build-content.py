@@ -129,3 +129,15 @@ landing=landing.replace('<img class="hero-image" src="assets/hero.jpg" alt="Arch
 landing=landing.replace('<div class="hero-content">','<div class="hero-media-controls"><button type="button" id="video-toggle" aria-label="Lire la vidéo de présentation en arrière-plan">Lire la vidéo</button><a href="https://www.youtube.com/watch?v=Uotj6h6rSXc" target="_blank" rel="noopener">Voir le film avec le son <span aria-hidden="true">↗</span><span class="sr-only"> (nouvel onglet)</span></a></div><p class="sr-only" id="video-status" role="status"></p><div class="hero-content">',1)
 landing=landing.replace('<script src="script.js"></script>','<script src="script.js"></script><script src="video.js"></script>')
 (dist/'index.html').write_text(landing)
+# Minimal video-first landing: transparent navigation and just one headline / CTA.
+landing=(dist/'index.html').read_text().replace('<body>','<body class="landing-page">',1)
+landing=landing.replace('<span>ALUMINIUM · ARCHITECTURE · DESIGN</span>','',1)
+landing=re.sub(r'<a class="header-contact".*?</a>','',landing,count=1)
+landing=landing.replace('>Réseau & contact</a>','>Contact</a>',1)
+a=landing.index('<div class="hero-content">');b=landing.index('</section>',a)
+landing=landing[:a]+'<div class="hero-content"><h1>En toute liberté.</h1><a class="button lime" href="catalogue.html">Nos solutions <span aria-hidden="true">↗</span></a></div>'+landing[b:]
+landing=landing.replace('Voir le film avec le son <span','Le film <span')
+(dist/'index.html').write_text(landing)
+
+landing=(dist/'index.html').read_text().replace('>Lire la vidéo</button>','>▶</button>').replace('<a href="https://www.youtube.com/watch?v=Uotj6h6rSXc"','<a aria-label="Voir le film STRUGAL avec le son sur YouTube" href="https://www.youtube.com/watch?v=Uotj6h6rSXc"')
+(dist/'index.html').write_text(landing)
