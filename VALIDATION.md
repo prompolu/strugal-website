@@ -21,7 +21,7 @@
 | Perceivable — 1.1.1, 1.3.1 | Alternative text, semantic headings, labels and comparison headers | Static checks across all 40 pages |
 | Perceivable — 1.4.3 | Dark text, bronze links and readable brand buttons | Contrast calculations below |
 | Operable — 2.1.1, 2.4.1, 2.4.7 | Skip link, visible focus, native controls, Escape dismisses navigation | Browser keyboard menu check and labelled control inspection |
-| Motion — 2.2.2 | Video play/pause, reduced-motion still image, pause out of view | Playback and pause/resume verified locally |
+| Motion — 2.2.2 | Native video without visible controls as requested; reduced-motion still image; pause out of view | Native 3840 × 2160 playback verified locally |
 | Understandable — 3.3.1, 3.3.2 | Required form fields, clear labels, no false submission confirmation | Brief generation tested with sample input |
 | Robust — 4.1.2 | Expanded/pressed state, location and filter status announcements | Browser accessibility tree inspected |
 
@@ -41,9 +41,9 @@
 - All internal destinations, anchors, local assets, unique IDs, H1 counts and control labels passed across 40 pages.
 - Desktop product page, mobile product page, family filtering, system filtering, location selection and project brief tested.
 - Layout checked at 320px, 390px, 768px and 1280px. No page-wide horizontal overflow at 320px. Comparison table intentionally scrolls within its own region.
-- User-supplied YouTube film Uotj6h6rSXc verified as STRUGAL’s corporate video 2026 via YouTube oEmbed. Background playback and pause/resume tested.
+- User-supplied STRUGAL corporate film downloaded at its highest available resolution: 3840 × 2160, 25 fps. Original 4K video stream repackaged without re-encoding; H.264 compatibility versions added. Browser confirms native video, no iframe, controls=false and zero caption tracks.
 - The rejected 3D window section remains removed.
 
 ## Limits
 
-This is not a WCAG certification. VoiceOver/NVDA and real-device assistive technology testing have not been completed. Text over changing video frames requires ongoing visual review; an overlay maintains legibility. The project brief stays in the browser and can be copied; there is no email/CRM submission backend. YouTube playback depends on network availability and browser autoplay policy; the still image and direct film link remain available. Addresses and specifications are sourced from the manufacturer and must be confirmed for a real order or visit.
+This is not a WCAG certification. VoiceOver/NVDA and real-device assistive technology testing have not been completed. Text over changing video frames requires ongoing visual review; an overlay maintains legibility. The project brief stays in the browser and can be copied; there is no email/CRM submission backend. Native playback depends on network availability, codec support and browser autoplay policy; a still image is retained when playback is unavailable. Addresses and specifications are sourced from the manufacturer and must be confirmed for a real order or visit.
