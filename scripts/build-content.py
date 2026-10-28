@@ -141,3 +141,13 @@ landing=landing.replace('Voir le film avec le son <span','Le film <span')
 
 landing=(dist/'index.html').read_text().replace('>Lire la vidéo</button>','>▶</button>').replace('<a href="https://www.youtube.com/watch?v=Uotj6h6rSXc"','<a aria-label="Voir le film STRUGAL avec le son sur YouTube" href="https://www.youtube.com/watch?v=Uotj6h6rSXc"')
 (dist/'index.html').write_text(landing)
+# Clean background presentation: no on-page player controls.
+landing=(dist/'index.html').read_text()
+landing=re.sub(r'<div class="hero-media-controls">.*?</div>','',landing,count=1)
+(dist/'index.html').write_text(landing)
+# Serve our downloaded film through the native video element, with no YouTube embed.
+landing=(dist/'index.html').read_text()
+landing=landing.replace('<div class="hero-video" aria-hidden="true"><div id="hero-player"></div></div>','<div class="hero-video" aria-hidden="true"><video id="native-hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/strugal-native-poster.jpg" disablepictureinpicture disableremoteplayback tabindex="-1" aria-hidden="true"></video></div>')
+landing=landing.replace('assets/strugal-film-poster.jpg','assets/strugal-native-poster.jpg')
+landing=landing.replace('<script src="video.js"></script>','<script src="vendor/hls.light.min.js"></script><script src="video.js"></script>')
+(dist/'index.html').write_text(landing)

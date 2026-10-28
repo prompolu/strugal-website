@@ -1,12 +1,32 @@
 'use strict';
-(()=>{const container=document.querySelector('.hero-video'),toggle=document.querySelector('#video-toggle'),status=document.querySelector('#video-status');if(!container||!toggle)return;const motion=matchMedia('(prefers-reduced-motion: reduce)');let player,ready=false,loading=false,userPaused=motion.matches,wasPlaying=false,observerPaused=false;
-function update(playing){toggle.textContent=playing?'Ⅱ':'▶';toggle.setAttribute('aria-label',playing?'Mettre la vidéo de présentation en pause':'Lire la vidéo de présentation en arrière-plan')}
-function fail(){container.classList.remove('playing');toggle.hidden=true;status.textContent='La lecture intégrée est indisponible. Le lien « Voir le film avec le son » permet de regarder la vidéo sur YouTube.'}
-function createPlayer(){if(player)return;player=new YT.Player('hero-player',{host:'https://www.youtube-nocookie.com',width:'100%',height:'100%',videoId:'Uotj6h6rSXc',playerVars:{autoplay:1,mute:1,controls:0,loop:1,playlist:'Uotj6h6rSXc',playsinline:1,rel:0,disablekb:1,origin:location.origin},events:{onReady:event=>{ready=true;const iframe=event.target.getIframe();iframe.setAttribute('title','STRUGAL — film institutionnel 2026');iframe.setAttribute('tabindex','-1');iframe.setAttribute('aria-hidden','true');iframe.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');event.target.mute();if(!userPaused)event.target.playVideo();else event.target.pauseVideo();update(false)},onStateChange:event=>{const playing=event.data===YT.PlayerState.PLAYING;if(playing)container.classList.add('playing');update(playing)},onAutoplayBlocked:()=>{update(false);status.textContent='Le navigateur attend votre accord de lecture. Utilisez « Lire la vidéo ».'},onError:fail}})}
-function load(){if(ready){player.playVideo();return}if(loading)return;loading=true;if(window.YT?.Player){createPlayer();return}window.onYouTubeIframeAPIReady=createPlayer;const script=document.createElement('script');script.src='https://www.youtube.com/iframe_api';script.async=true;script.onerror=fail;document.head.append(script)}
-toggle.addEventListener('click',()=>{if(ready&&player.getPlayerState()===YT.PlayerState.PLAYING){userPaused=true;player.pauseVideo();status.textContent='Vidéo en pause.'}else{userPaused=false;load();status.textContent='Lecture de la vidéo sans son.'}});
-if(!motion.matches){userPaused=false;load()}else{status.textContent='L’image fixe respecte votre préférence de mouvement réduit. Vous pouvez lancer la vidéo.';update(false)}
-motion.addEventListener('change',event=>{if(event.matches){userPaused=true;if(ready)player.pauseVideo();container.classList.remove('playing');update(false)}});
-document.addEventListener('visibilitychange',()=>{if(!ready)return;if(document.hidden){wasPlaying=player.getPlayerState()===YT.PlayerState.PLAYING;if(wasPlaying)player.pauseVideo()}else if(wasPlaying&&!userPaused&&!observerPaused)player.playVideo()});
-const observer=new IntersectionObserver(entries=>{if(!ready)return;const visible=entries[0].isIntersecting;if(!visible&&player.getPlayerState()===YT.PlayerState.PLAYING){observerPaused=true;player.pauseVideo()}else if(visible&&observerPaused){observerPaused=false;if(!userPaused&&!document.hidden)player.playVideo()}},{threshold:.05});observer.observe(document.querySelector('.hero'));
+(()=>{
+  const video=document.querySelector('#native-hero-video');
+  const container=document.querySelector('.hero-video');
+  if(!video||!container)return;
+  const motion=matchMedia('(prefers-reduced-motion: reduce)');
+  let hls,loaded=false,visible=true,fallback=false;
+  video.muted=true;video.defaultMuted=true;video.controls=false;
+  function poster(){container.classList.remove('playing');}
+  function play(){if(motion.matches||!visible||document.hidden)return;video.play().catch(poster);}
+  function useFallback(){if(fallback){poster();return;}fallback=true;if(hls){hls.destroy();hls=null;}video.src='assets/strugal-film-fallback.mp4';video.load();play();}
+  function load(){
+    if(loaded||motion.matches)return;loaded=true;
+    if(video.canPlayType('application/vnd.apple.mpegurl'))video.src='assets/strugal-film.m3u8';
+    else if(window.Hls?.isSupported()){
+      hls=new Hls({maxBufferLength:16,backBufferLength:0,capLevelToPlayerSize:false,startLevel:-1});
+      hls.loadSource('assets/strugal-film.m3u8');hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED,play);
+      hls.on(Hls.Events.ERROR,(_,data)=>{if(data.fatal)useFallback();});
+    }else useFallback();
+    play();
+  }
+  function sync(){if(motion.matches||document.hidden||!visible){video.pause();poster();}else{load();play();}}
+  video.addEventListener('playing',()=>{if(!motion.matches&&visible&&!document.hidden)container.classList.add('playing');});
+  video.addEventListener('pause',poster);
+  video.addEventListener('loadedmetadata',()=>{for(const track of video.textTracks)track.mode='disabled';play();});
+  video.addEventListener('error',()=>{if(!hls)useFallback();});
+  document.addEventListener('visibilitychange',sync);
+  motion.addEventListener('change',sync);
+  new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();},{threshold:.05}).observe(document.querySelector('.hero'));
+  load();
 })();
