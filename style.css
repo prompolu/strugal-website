@@ -33,3 +33,16 @@ main>.source-note{width:86%;max-width:1320px;margin:0 auto 45px}
 @media(max-width:680px){.landing-page>header{height:84px;padding:0 7%}.landing-page>header .logo img{width:155px}.landing-page>header nav{top:84px;max-height:calc(100dvh - 84px)}.landing-page .hero{height:100svh;min-height:590px;max-height:950px}.landing-page .hero-content{bottom:125px;padding:0 7%}.landing-page .hero-content h1{font-size:44px;letter-spacing:-1.5px;margin:0 0 24px}.landing-page .hero-content .button{font-size:14px;padding:12px 20px}.landing-page .hero-media-controls{bottom:36px;right:7%;left:auto;justify-content:flex-end}.landing-page .hero-video iframe,.landing-page .hero-video>div{width:max(100vw,177.78svh,1049px);height:max(100svh,590px)}.landing-page .hero-shade{background:linear-gradient(180deg,#0009,transparent 30%,transparent 48%,#0009)}}
 /* Native self-hosted film: no third-party player surface or caption layer. */
 .landing-page .hero-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none}
+
+/* STRUGAL-published photography replaces the former family line drawings. */
+.family-card{min-height:0;padding:0 0 72px;overflow:hidden;background:#fff;transition:border-color .2s,box-shadow .2s}
+.family-card img{display:block;width:100%;height:190px;object-fit:cover;margin:0;filter:none;transition:transform .45s var(--ease-out)}
+.family-card:hover{background:#fff;border-color:#9f8044;box-shadow:0 12px 30px rgba(36,36,36,.08)}
+.family-card:hover img{transform:scale(1.025)}
+.family-card h3{max-width:none;margin:0;padding:20px 50px 0 20px;font-size:20px;line-height:1.25}
+.family-index{top:14px;right:14px;padding:7px 9px;background:rgba(36,36,36,.88);color:#fff;font-size:10px;letter-spacing:.3px;backdrop-filter:blur(4px)}
+.family-arrow{right:20px;bottom:20px;color:#77602f;font-size:21px}
+.family-hero{grid-template-columns:1fr 1fr;gap:7%}
+.family-hero>img{height:380px;padding:0;object-fit:cover;background:#ebe8e0}
+@media(max-width:1000px){.family-card img{height:175px}.family-card h3{font-size:19px}}
+@media(max-width:680px){.family-card{min-height:0;padding:0 0 62px}.family-card img{width:100%;height:132px;margin:0}.family-card h3{font-size:16px;line-height:1.3;padding:15px 35px 0 14px}.family-index{top:8px;right:8px;font-size:8px;padding:5px 6px}.family-arrow{right:13px;bottom:15px}.family-hero>img{height:270px;padding:0}}
