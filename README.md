@@ -41,7 +41,15 @@ The downloaded original masters are retained outside this repository in the work
 
 ## Deployment
 
-Deploy `dist/` with a static host that supports the included video files. Preserve the `.m3u8`, `.m4s`, `.mp4`, and `.ts` assets. The current Sites configuration is retained; this repository does not automatically publish to GitHub Pages.
+Deploy `dist/` with a static host that supports the included video files. Preserve the `.m3u8`, `.m4s`, `.mp4`, and `.ts` assets. The current Sites configuration is retained. GitHub Pages publishes the `gh-pages` branch, whose root contains the contents of `dist/`.
+
+After committing changes to `main`, publish an update with:
+
+```sh
+bash scripts/deploy-github-pages.sh
+```
+
+GitHub CLI authentication is required. This pushes only the deployable website to `gh-pages`, keeping the source branch separate. The live address is https://prompolu.github.io/strugal-website/.
 
 ## Contact brief
 
